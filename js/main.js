@@ -60,7 +60,7 @@ function find() {
       countResponses++;
    }
    for (let i = 0; i < inputs.length; i++){
-      inputs[i].value = '';
+      // inputs[i].value = '';
       inputs[i].setAttribute('disabled', '');
    }
    result.textContent = `Ваш итоговый результат теста: ${countResponses} баллов`;
@@ -78,6 +78,7 @@ function clear (){
    countResponses = 0;
    for (let i = 0; i < inputs.length; i++){
       inputs[i].removeAttribute('disabled');
+      inputs[i].value = '';
       button.setAttribute('disabled', '');
    }
 }
