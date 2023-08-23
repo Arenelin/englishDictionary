@@ -5,18 +5,26 @@
 .main{
    max-width: 500px;
    margin: 0 auto;
-
 }
-
+.header{
+   padding-top: 50px;
+}
+.wrapper{
+   display: flex;
+   justify-content: space-between;
+   margin-bottom: 40px;
+}
 .item-response{
-   border: 1px solid black;
+   border: 1px solid rgb(0, 0, 0);
    padding: 5px;
    font-size: 16px;
    margin-bottom: 20px;
 }
+
 .item-question{
    font-size: 22px;
    font-weight: 500;
+   margin-bottom: 15px;
 }
 .description{
    margin-bottom: 20px;
@@ -49,4 +57,8 @@
    padding: 10px;
    border-radius: 10px;
    margin-top: 20px;
+}
+
+.result-block{
+   text-align: center;
 }
