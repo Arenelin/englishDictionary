@@ -1,117 +1,59 @@
 'use strict'
 
-const inputs = document.querySelectorAll('input');
-let result = document.querySelector('.result');
 
-for (let i = 0; i < inputs.length; i++){
+const inputs = document.querySelectorAll('input');
+const buttonForSubmitResult = document.querySelector('.btn-submit');
+const btnForClearResult = document.createElement('button');
+const cyrillicPattern = /^[\u0400-\u04FF]+$/;
+let result = document.querySelector('.result');
+let countResponses = 0;
+buttonForSubmitResult.addEventListener('click', find);
+btnForClearResult.addEventListener('click', clear);
+
+// Проверка корректности вводимых данных в поле 
+for (let i = 0; i < inputs.length; i++) {
    inputs[i].addEventListener('keydown', (e) => {
-      if (!isNaN(e.key) || e.key === '+'
-         || e.key === '.'
-         || e.key === '-'
-         || e.key === '*'
-         || e.key === '/'
-         || e.key === '='
-         || e.key === '%'
-         || e.key === '$'
-         || e.key === '№'
-         || e.key === '!'
-         || e.key === '@'
-         || e.key === '/') {
+      if (!isNaN(e.key) && !cyrillicPattern.test(e.key) && e.keyCode !== 32 && e.key !== 'Backspace') {
          e.preventDefault();
       }
    });
 }
-const btn = document.createElement('button');
-let countResponses = 0;
 
-let inputOne = document.querySelector('#input1');
-let inputTwo = document.querySelector('#input2');
-let inputThree = document.querySelector('#input3');
-let inputFour = document.querySelector('#input4');
-let inputFive = document.querySelector('#input5');
-let inputSix = document.querySelector('#input6');
-let inputSeven = document.querySelector('#input7');
-let inputEight = document.querySelector('#input8');
-let inputNine = document.querySelector('#input9');
-let inputTen = document.querySelector('#input10');
-
-let button = document.querySelector('.btn-submit');
-button.addEventListener('click', find);
-
+//Проверка ответов введенных в поле и отображение итогового результата
 function find() {
-   for (let i = 0; i < inputs.length; i++){
+   if (inputs.length !== arrayOfWords.length) {
+      console.error('Проверьте корректность введенных данных в словаре');
+   } else {
+      for (let i = 0; i < inputs.length; i++) {
       inputs[i].setAttribute('disabled', '');
       inputs[i].style.cssText = `
-      box-shadow: 1px 1px 10px 5px rgb(236, 107, 107)
-      `;
-   }
-   if (inputOne.value === 'Она' || inputOne.value === 'она') {
-      countResponses++;
-      createShadow(inputOne);
-   }
-   if (inputTwo.value === 'Тремор' || inputTwo.value === 'тремор') {
-      countResponses++;
-      createShadow(inputTwo);
-   }
-   if (inputThree.value === 'Осадки' || inputThree.value === 'осадки') {
-      countResponses++;
-      createShadow(inputThree)
-   }
-   if (inputFour.value === 'Клад' || inputFour.value === 'клад') {
-      countResponses++;
-      createShadow(inputFour)
-   }
-   if (inputFive.value === 'Утомительно' || inputFive.value === 'утомительно') {
-      countResponses++;
-      createShadow(inputFive)
-   }
-   if (inputSix.value === 'Шрам' || inputSix.value === 'шрам') {
-      countResponses++;
-      createShadow(inputSix)
-   }
-   if (inputSeven.value === 'Сцена' || inputSeven.value === 'сцена') {
-      countResponses++;
-      createShadow(inputSeven)
-   }
-   if (inputEight.value === 'Записывать' || inputEight.value === 'записывать') {
-      countResponses++;
-      createShadow(inputEight)
-   }
-   if (inputNine.value === 'История' || inputNine.value === 'история') {
-      countResponses++;
-      createShadow(inputNine)
-   }
-   if (inputTen.value === 'Имманентный' || inputTen.value === 'имманентный') {
-      countResponses++;
-      createShadow(inputTen)
+         box-shadow: 1px 1px 10px 5px rgb(236, 107, 107)
+         `;
+      if (inputs[i].value.toLowerCase() === arrayOfWords[i].value.toLowerCase()) {
+         countResponses++;
+         inputs[i].style.cssText = `
+   box-shadow: 1px 1px 10px 5px rgb(151, 243, 151)
+   `;
+      }
    }
    result.textContent = `Ваш итоговый результат теста: ${countResponses} баллов`;
-   btn.className = 'btn-for-return';
-   btn.textContent = 'Начать тест заново';
-   result.append(btn);
-   button.setAttribute('disabled', '');
-}
+   btnForClearResult.className = 'btn-for-return';
+   btnForClearResult.textContent = 'Начать тест заново';
+   result.append(btnForClearResult);
+   buttonForSubmitResult.setAttribute('disabled', '');
+   }
+};
 
-
-btn.addEventListener('click', clear);
-
-
-function clear (){
+//Очистка полей ввода и удаление кнопки
+function clear() {
    result.textContent = '';
    countResponses = 0;
-   button.removeAttribute('disabled');
-   for (let i = 0; i < inputs.length; i++){
+   buttonForSubmitResult.removeAttribute('disabled');
+   for (let i = 0; i < inputs.length; i++) {
       inputs[i].removeAttribute('disabled');
       inputs[i].value = '';
       inputs[i].style.cssText = `
       box-shadow: none
       `;
    }
-}
-
-
-function createShadow(input) {
-   input.style.cssText = `
-   box-shadow: 1px 1px 10px 5px rgb(151, 243, 151)
-   `;
-}
+};
